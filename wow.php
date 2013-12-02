@@ -18,7 +18,6 @@ class plgSystemWow extends JPlugin
         'mod_wow_guild_tabard',
         'mod_wow_latest_guild_achievements',
         'mod_wow_top_weekly_contributors',
-
         'mod_wow_raid_progress_classic',
         'mod_wow_raid_progress_bc',
         'mod_wow_raid_progress_wotlk',
