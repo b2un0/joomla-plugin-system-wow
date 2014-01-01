@@ -11,36 +11,6 @@ defined('_JEXEC') or die;
 
 class plgSystemWow extends JPlugin
 {
-    private $modules = array(
-        'mod_wow_armory_guild_news', // x
-        'mod_wow_guild_members', // x
-        'mod_wow_guild_rank', // x
-        'mod_wow_guild_tabard',
-        'mod_wow_latest_guild_achievements', // x
-        'mod_wow_top_weekly_contributors', // x
-        'mod_wow_raid_progress_classic',
-        'mod_wow_raid_progress_bc',
-        'mod_wow_raid_progress_wotlk',
-        'mod_wow_raid_progress_cata', // x
-        'mod_wow_raid_progress_mop', // x
-        'mod_wow_raid_progress_wod'
-    );
-
-    public function onAfterRoute()
-    {
-        $app = JFactory::getApplication();
-
-        if ($app->isAdmin() || version_compare(JVERSION, 3.2, '>=')) {
-            return;
-        }
-
-        $input = $app->input;
-
-        if ($input->getWord('option') == 'com_ajax' && $input->get('module') && $input->getWord('format')) {
-            // TODO
-        }
-    }
-
     public function onBeforeCompileHead()
     {
         $app = JFactory::getApplication();
@@ -59,5 +29,93 @@ class plgSystemWow extends JPlugin
         $js .= 'window.wow.Itemid=' . $app->input->getInt('Itemid') . ';';
 
         $doc->addScriptDeclaration($js);
+    }
+
+    public function onAfterRoute()
+    {
+        if (JFactory::getApplication()->isAdmin() || version_compare(JVERSION, 3.2, '>=')) {
+            return;
+        }
+
+        $input = JFactory::getApplication()->input;
+
+        if ($input->getWord('option') == 'com_ajax' && $module = $input->get('module')) {
+
+            JLoader::import('joomla.application.module.helper');
+
+            $moduleObject = JModuleHelper::getModule('mod_' . $module);
+
+            if ($moduleObject->id != 0) {
+                $helperFile = JPATH_BASE . '/modules/mod_' . $module . '/helper.php';
+
+                if (strpos($module, '_')) {
+                    $parts = explode('_', $module);
+                } elseif (strpos($module, '-')) {
+                    $parts = explode('-', $module);
+                }
+
+                if ($parts) {
+                    $class = 'mod';
+                    foreach ($parts as $part) {
+                        $class .= ucfirst($part);
+                    }
+                    $class .= 'Helper';
+                } else {
+                    $class = 'mod' . ucfirst($module) . 'Helper';
+                }
+
+                $method = $input->get('method') ? $input->get('method') : 'get';
+
+                if (is_file($helperFile)) {
+                    require_once $helperFile;
+
+                    if (method_exists($class, $method . 'Ajax')) {
+                        try {
+                            $results = call_user_func($class . '::' . $method . 'Ajax');
+                        } catch (Exception $e) {
+                            $results = $e;
+                        }
+
+                    } // Method does not exist
+                    else {
+                        $results = new LogicException(sprintf('Method %s does not exist', $method . 'Ajax'), 404);
+                    }
+                } // The helper file does not exist
+                else {
+                    $results = new RuntimeException(sprintf('The file at %s does not exist', 'mod_' . $module . '/helper.php'), 404);
+                }
+            } // Module is not published, you do not have access to it, or it is not assigned to the current menu item
+            else {
+                $results = new LogicException(sprintf('Module %s is not published, you do not have access to it, or it\'s not assigned to the current menu item', 'mod_' . $module), 404);
+            }
+
+            $this->out($results);
+        }
+    }
+
+    private function out($results)
+    {
+        $app = JFactory::getApplication();
+
+        if ($results instanceof Exception) {
+            // Log an error
+            JLog::add($results->getMessage(), JLog::ERROR);
+
+            // Set status header code
+            $app->setHeader('status', $results->getCode(), true);
+
+            // Echo exception type and message
+            $out = get_class($results) . ': ' . $results->getMessage();
+        } // Output string/ null
+        elseif (is_scalar($results)) {
+            $out = (string)$results;
+        } // Output array/ object
+        else {
+            $out = implode((array)$results);
+        }
+
+        echo $out;
+
+        $app->close();
     }
 }
