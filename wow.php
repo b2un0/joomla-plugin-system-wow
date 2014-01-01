@@ -25,27 +25,20 @@ class plgSystemWow extends JPlugin
         'mod_wow_raid_progress_mop',
         'mod_wow_raid_progress_wod'
     );
-    private $plugins = array(
-        'wow_avatar'
-    );
 
-    public function onContentPrepareForm(JForm $form, $data)
+    public function onBeforeCompileHead()
     {
-        if (($form->getName() == 'com_modules.module' && in_array($data->module, $this->modules)) || ($form->getName() == 'com_plugins.plugin' && in_array($data->element, $this->plugins))) {
-            $form->setFieldAttribute('guild', 'readonly', 'true', 'params');
-            $form->setFieldAttribute('realm', 'readonly', 'true', 'params');
-            $form->setFieldAttribute('region', 'readonly', 'true', 'params');
-            $form->setFieldAttribute('lang', 'readonly', 'true', 'params');
+        $app = JFactory::getApplication();
+        if ($app->isAdmin()) {
+            return;
         }
-    }
 
-    public function onContentPrepareData($context, $data)
-    {
-        if (($context == 'com_modules.module' && in_array($data->module, $this->modules)) || ($context == 'com_plugins.plugin' && in_array($data->element, $this->plugins))) {
-            $data->params['guild'] = $this->params->get('guild');
-            $data->params['realm'] = $this->params->get('realm');
-            $data->params['region'] = $this->params->get('region');
-            $data->params['lang'] = $this->params->get('lang');
-        }
+        $doc = JFactory::getDocument();
+        $doc->addScript('media/wow/wow.js');
+
+        $js = 'window.wow.base="' . Juri::base(true) . '";';
+        $js .= 'window.wow.Itemid=' . $app->input->getInt('Itemid') . ';';
+
+        $doc->addScriptDeclaration($js);
     }
 }

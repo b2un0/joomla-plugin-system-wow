@@ -8,37 +8,12 @@
     <authorEmail>branko.wilhelm@gmail.com</authorEmail>
     <authorUrl>www.z-index.net</authorUrl>
     <version>@REVISION@</version>
-    <description>Auto Setup for all WoW Extensions from z-index.net</description>
+    <description>Add Ajax Support to all Joomla WoW Addons from z-index.net</description>
     <files>
         <filename plugin="wow">wow.php</filename>
+        <folder>forms</folder>
     </files>
     <updateservers>
         <server type="collection" priority="1" name="z-index development">http://www.z-index.net/en/extensions.xml</server>
     </updateservers>
-    <config>
-        <fields name="params">
-            <fieldset name="basic">
-                <field name="guild" type="text" default="" size="30" required="true" label="Guild" />
-                <field name="realm" type="text" default="" size="30" required="true" label="Realm" />
-                <field name="region" type="list" default="" required="true" label="Region">
-                    <option value="">JSELECT</option>
-                    <option value="us">USA</option>
-                    <option value="eu">Europe</option>
-                    <option value="kr">Korea</option>
-                    <option value="tw">Taiwan</option>
-                    <option value="sea">Southeast Asia</option>
-                </field>
-                <field name="lang" type="list" default="" required="true" label="JFIELD_LANGUAGE_LABEL">
-                    <option value="">JSELECT</option>
-                    <option value="en">English</option>
-                    <option value="de">German</option>
-                    <option value="fr">Français</option>
-                    <option value="es">Español</option>
-                    <option value="it">Italiano</option>
-                    <option value="pt">Português</option>
-                    <option value="ru">Русский</option>
-                </field>
-            </fieldset>
-        </fields>
-    </config>
 </extension>
