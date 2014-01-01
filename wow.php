@@ -26,6 +26,21 @@ class plgSystemWow extends JPlugin
         'mod_wow_raid_progress_wod'
     );
 
+    public function onAfterRoute()
+    {
+        $app = JFactory::getApplication();
+
+        if ($app->isAdmin() || version_compare(JVERSION, 3.2, '>=')) {
+            return;
+        }
+
+        $input = $app->input;
+
+        if ($input->getWord('option') == 'com_ajax' && $input->get('module') && $input->getWord('format')) {
+            // TODO
+        }
+    }
+
     public function onBeforeCompileHead()
     {
         $app = JFactory::getApplication();
