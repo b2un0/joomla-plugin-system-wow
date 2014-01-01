@@ -17,6 +17,8 @@
         <server type="collection" priority="1" name="z-index development">http://www.z-index.net/en/extensions.xml</server>
     </updateservers>
     <media folder="media" destination="wow">
+        <filename>loader.gif</filename>
+        <filename>wow.css</filename>
         <filename>wow.js</filename>
     </media>
 </extension>

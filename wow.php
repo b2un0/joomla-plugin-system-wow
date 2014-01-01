@@ -24,6 +24,7 @@ class plgSystemWow extends JPlugin
 
         $doc = JFactory::getDocument();
         $doc->addScript('media/wow/wow.js');
+        $doc->addStyleSheet('media/wow/wow.css');
 
         $js = 'window.wow.base="' . Juri::base(true) . '";';
         $js .= 'window.wow.Itemid=' . $app->input->getInt('Itemid') . ';';
