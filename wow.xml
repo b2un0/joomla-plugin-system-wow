@@ -3,12 +3,12 @@
     <name>System - WoW</name>
     <author>Branko Wilhelm</author>
     <creationDate>Dez 2013</creationDate>
-    <copyright>Copyright (C) 2013 Branko Wilhelm. All rights reserved.</copyright>
+    <copyright>Copyright (C) 2013 - 2014 Branko Wilhelm. All rights reserved.</copyright>
     <license>GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html</license>
     <authorEmail>branko.wilhelm@gmail.com</authorEmail>
     <authorUrl>www.z-index.net</authorUrl>
     <version>@REVISION@</version>
-    <description>Add Ajax Support to all Joomla WoW Addons from z-index.net</description>
+    <description>Add Ajax Support to most Joomla WoW Extensions from z-index.net</description>
     <files>
         <filename plugin="wow">wow.php</filename>
         <folder>forms</folder>
@@ -16,4 +16,7 @@
     <updateservers>
         <server type="collection" priority="1" name="z-index development">http://www.z-index.net/en/extensions.xml</server>
     </updateservers>
+    <media folder="media" destination="wow">
+        <filename>wow.js</filename>
+    </media>
 </extension>

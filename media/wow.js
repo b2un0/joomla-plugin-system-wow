@@ -7,7 +7,7 @@
 
 window.wow = window.wow || {};
 window.wow.ajax = function () {
-    jQuery('div[class^=mod_wo_].ajax').each(function () {
+    jQuery('div[class^=mod_wo].ajax').each(function () {
         var module = jQuery(this), name = module.attr('class').split(' ')[0];
         jQuery.ajax({
             url: window.wow.base,
@@ -21,9 +21,7 @@ window.wow.ajax = function () {
             success: function (html) {
                 module.replaceWith(html);
                 jQuery('.' + name).hide().fadeIn();
-                if (typeof window.wow[name] == 'function') {
-                    window.wow[name]();
-                }
+                (typeof window.wow[name] == 'function') ? window.wow[name]() : '';
             }
         });
     })

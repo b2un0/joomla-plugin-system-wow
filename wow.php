@@ -12,17 +12,17 @@ defined('_JEXEC') or die;
 class plgSystemWow extends JPlugin
 {
     private $modules = array(
-        'mod_wow_armory_guild_news',
-        'mod_wow_guild_members',
-        'mod_wow_guild_rank',
+        'mod_wow_armory_guild_news', // x
+        'mod_wow_guild_members', // x
+        'mod_wow_guild_rank', // x
         'mod_wow_guild_tabard',
-        'mod_wow_latest_guild_achievements',
-        'mod_wow_top_weekly_contributors',
+        'mod_wow_latest_guild_achievements', // x
+        'mod_wow_top_weekly_contributors', // x
         'mod_wow_raid_progress_classic',
         'mod_wow_raid_progress_bc',
         'mod_wow_raid_progress_wotlk',
-        'mod_wow_raid_progress_cata',
-        'mod_wow_raid_progress_mop',
+        'mod_wow_raid_progress_cata', // x
+        'mod_wow_raid_progress_mop', // x
         'mod_wow_raid_progress_wod'
     );
 
@@ -31,6 +31,10 @@ class plgSystemWow extends JPlugin
         $app = JFactory::getApplication();
         if ($app->isAdmin()) {
             return;
+        }
+
+        if (version_compare(JVERSION, 3, '>=')) {
+            JHtml::_('jquery.framework');
         }
 
         $doc = JFactory::getDocument();
