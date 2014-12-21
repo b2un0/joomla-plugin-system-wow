@@ -1,7 +1,7 @@
 /**
  * @author      Branko Wilhelm <branko.wilhelm@gmail.com>
  * @link        http://www.z-index.net
- * @copyright   (c) 2013 - 2014 Branko Wilhelm
+ * @copyright   (c) 2013 - 2015 Branko Wilhelm
  * @license     GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
@@ -24,9 +24,9 @@ window.wow.ajax = function () {
                 (typeof window.wow[name] == 'function') ? window.wow[name]() : '';
             }
         });
-    })
-}
+    });
+};
 
-if (jQuery) {
+if (typeof jQuery !== 'undefined') {
     jQuery(document).ready(window.wow.ajax);
 }
