@@ -41,7 +41,7 @@ class plgSystemWow extends JPlugin
                 return true;
             }
 
-            if ($this->params->get('j25_eol', true) && version_compare(JVERSION, 2.5, '<=')) {
+            if ($this->params->get('j25_eol', true) && version_compare(JVERSION, 3, '<')) {
                 $app->enqueueMessage(JText::_('PLG_SYSTEM_WOW_J25_EOL_SUPPORT_DROPPED'), 'error');
             }
 
