@@ -17,16 +17,26 @@ class JFormFieldInfo extends JFormFieldText
 
     protected function getInput()
     {
-        $button = JHtml::_(
-            'link',
-            $this->getAttribute('info_url'),
-            JText::_($this->getAttribute('info_label')),
-            array('
-              target' => '_blank',
-                'class' => 'btn btn-info',
-                'title' => JText::_($this->getAttribute('info_title'))
-            )
-        );
+        if(version_compare(JVERSION, 3, '>=')) {
+            $button = JHtml::_(
+                'link',
+                $this->getAttribute('info_url'),
+                JText::_($this->getAttribute('info_label')),
+                array('
+                  target' => '_blank',
+                    'class' => 'btn btn-info',
+                    'title' => JText::_($this->getAttribute('info_title'))
+                )
+            );
+        }else{
+            $info_url = $this->element->getAttribute('info_url');
+            $info_label = $this->element->getAttribute('info_label');
+            $info_title = $this->element->getAttribute('info_title');
+
+            $button = '<button type="button" onclick="window.open(\'' . JText::_($info_url) . '.\');" title="' . JText::_($info_title) . '">' . JText::_($info_label) . '</button>';
+
+        }
+
         return parent::getInput() . '&nbsp;' . $button;
     }
 }
