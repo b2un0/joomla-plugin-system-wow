@@ -63,7 +63,10 @@ class plgSystemWowInstallerScript
 
         // check if plugin not configured
         if (
-            (!$plugin->params->get('guild') ||
+            !$plugin ||
+            !($plugin->params = new JRegistry($plugin->params)) ||
+            (
+                !$plugin->params->get('guild') ||
                 !$plugin->params->get('realm') ||
                 !$plugin->params->get('region') ||
                 !$plugin->params->get('locale')
