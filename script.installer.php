@@ -59,7 +59,8 @@ class plgSystemWowInstallerScript
     public function postflight()
     {
         $plugin = JPluginHelper::getPlugin('system', 'wow');
-        $plugin->params = new JRegistry($plugin->params);
+        
+        return true; // TODO
 
         // check if plugin not configured
         if (
