@@ -56,10 +56,15 @@ class plgSystemWowInstallerScript
         $installer->install($lib);
     }
 
+    public function update(JAdapterInstance $adapter)
+    {
+        $this->install($adapter);
+    }
+
     public function postflight()
     {
         $plugin = JPluginHelper::getPlugin('system', 'wow');
-        
+
         return true; // TODO
 
         // check if plugin not configured
