@@ -18,6 +18,10 @@ class WoWModuleAbstract
 
     public function __construct(JRegistry $params)
     {
+        if (version_compare(JVERSION, 3.2, '<')) {
+            $params->set('ajax', 0);
+        }
+
         $this->params = new stdClass;
         $this->params->module = $params;
         $this->params->global = WoW::getInstance()->params;

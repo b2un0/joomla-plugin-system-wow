@@ -79,6 +79,8 @@ class WoWAdapterWoWAPI extends WoWAdapterAbstract
         $result->body = json_decode($result->body);
 
         if ($result->code != 200) {
+            $uri->delVar('apikey');
+            $this->url = $uri->toString();
             $msg = JText::sprintf('Server Error: %s url: %s', $result->body->reason, JHtml::_('link', $this->url, $result->code, array('target' => '_blank'))); // TODO JText::_()
             throw new RuntimeException($msg);
         }
