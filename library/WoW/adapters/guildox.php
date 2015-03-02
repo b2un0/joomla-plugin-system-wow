@@ -16,7 +16,7 @@ class WoWAdapterGuildOx extends WoWAdapterAbstract
      */
     public function getData()
     {
-        $this->url = 'http://www.guildox.com/go/guildxml.aspx?j=1&n=' . $this->params->get('guild') . '&r=' . $this->params->get('realm') . '-' . $this->params->get('region');
+        $this->url = 'http://www.guildox.com/go/guildxml.aspx?j=1&n=' . $this->params->get('guild') . '&r=' . JApplicationHelper::stringURLSafe($this->params->get('realm')) . '-' . $this->params->get('region');
 
         $result = $this->getRemote($this->url);
 

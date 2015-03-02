@@ -16,7 +16,7 @@ class WoWAdapterWoWProgress extends WoWAdapterAbstract
      */
     public function getData()
     {
-        $this->url = 'http://www.wowprogress.com/guild/' . $this->params->get('region') . '/' . $this->params->get('realm') . '/' . $this->params->get('guild') . '/json_rank';
+        $this->url = 'http://www.wowprogress.com/guild/' . $this->params->get('region') . '/' . JApplicationHelper::stringURLSafe($this->params->get('realm')) . '/' . $this->params->get('guild') . '/json_rank';
 
         $result = $this->getRemote($this->url);
 

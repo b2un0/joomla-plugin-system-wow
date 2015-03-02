@@ -45,6 +45,7 @@ class plgSystemWow extends JPlugin
                 $app->enqueueMessage(JText::_('PLG_SYSTEM_WOW_J25_EOL_SUPPORT_DROPPED'), 'error');
             }
 
+            // TODO muss strikter behandelt werden, wird auch bei Ajax request angewendet
             if ($this->params->get('status', true)) {
                 $doc = JFactory::getDocument();
                 $buffer = $doc->getBuffer('modules', 'status');
