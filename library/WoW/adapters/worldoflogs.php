@@ -13,6 +13,7 @@ class WoWAdapterWorldOfLogs extends WoWAdapterAbstract
 {
     /**
      * @param integer $guildId
+     *
      * @return mixed
      */
     public function getData($guildId)
@@ -21,14 +22,16 @@ class WoWAdapterWorldOfLogs extends WoWAdapterAbstract
 
         $result = $this->getRemote($this->url);
 
-        if ($result->code != 200) {
+        if ($result->code != 200)
+        {
             $msg = JText::sprintf('Server Error: %s url: %s', $result->body->reason, JHtml::_('link', $this->url, $result->code, array('target' => '_blank')));
             throw new RuntimeException($msg);
         }
 
         $result->body = json_decode($result->body);
 
-        if (empty($result->body->rows) || !is_array($result->body->rows)) {
+        if (empty($result->body->rows) || !is_array($result->body->rows))
+        {
             $msg = JText::_('no raids found');
             throw new RuntimeException($msg);
         }

@@ -22,7 +22,8 @@ class WoWAdapterGuildOx extends WoWAdapterAbstract
 
         $result->body = json_decode($result->body);
 
-        if ($result->code != 200) {
+        if ($result->code != 200)
+        {
             $msg = JText::sprintf('Server Error: %s', JHtml::_('link', $this->url, $result->code, array('target' => '_blank')));
             throw new RuntimeException($msg);
         }

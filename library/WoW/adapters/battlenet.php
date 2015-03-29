@@ -14,11 +14,13 @@ class WoWAdapterBattleNET extends WoWAdapterAbstract
     /**
      * @param string $target
      * @param bool $persistent
+     *
      * @return mixed|null
      */
     public function getData($target, $persistent = false)
     {
-        switch ($target) {
+        switch ($target)
+        {
             case 'guild_news':
                 $this->url = 'http://' . $this->params->get('region') . '.battle.net/wow/' . $this->params->get('locale') . '/guild/' . rawurlencode($this->params->get('realm')) . '/' . rawurlencode($this->params->get('guild')) . '/news';
                 break;
@@ -34,7 +36,8 @@ class WoWAdapterBattleNET extends WoWAdapterAbstract
 
         $result = $this->getRemote($this->url, $persistent);
 
-        if ($result->code != 200) {
+        if ($result->code != 200)
+        {
             $msg = JText::sprintf('Server Error: %s', JHtml::_('link', $this->url, $result->code, array('target' => '_blank')));
             throw new RuntimeException($msg);
         }

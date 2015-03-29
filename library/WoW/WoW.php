@@ -24,17 +24,20 @@ class WoW
     public static function getInstance(JRegistry $params = null)
     {
         // $instance set, but $params given -> return new instance
-        if (self::$instance && $params != null) {
+        if (self::$instance && $params != null)
+        {
             return new self($params);
         }
 
         // create and get first $instance
-        if (!self::$instance && $params) {
+        if (!self::$instance && $params)
+        {
             self::$instance = new self($params);
         }
 
         // no $instance and $params set, cant work!
-        if (!self::$instance && !$params) {
+        if (!self::$instance && !$params)
+        {
             throw new InvalidArgumentException(__CLASS__ . ' must be instanced with params!');
         }
 
@@ -60,13 +63,15 @@ class WoW
      */
     public function getAdapter($adapter)
     {
-        if (!$this->checkConfig()) {
+        if (!$this->checkConfig())
+        {
             throw new InvalidArgumentException(JText::_('LIB_WOW_CONFIGURATION_MISSING'));
         }
 
         $class = 'WoWAdapter' . $adapter;
 
-        if (class_exists($class)) {
+        if (class_exists($class))
+        {
             return new $class($this->params);
         }
 
@@ -84,7 +89,8 @@ class WoW
             !$this->params->get('realm') ||
             !$this->params->get('region') ||
             !$this->params->get('locale')
-        ) {
+        )
+        {
             return false;
         }
 
@@ -97,6 +103,7 @@ class WoW
         $uri->setScheme($this->params->get('scheme', 'http'));
         $uri->setHost($this->params->get('region') . '.battle.net');
         $uri->setPath('/wow/' . $this->params->get('locale') . '/guild/' . rawurlencode($this->params->get('realm')) . '/' . rawurlencode($this->params->get('guild')) . '/');
+
         return $uri->toString();
     }
 }

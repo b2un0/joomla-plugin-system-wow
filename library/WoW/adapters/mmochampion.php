@@ -20,14 +20,16 @@ class WoWAdapterMMOChampion extends WoWAdapterAbstract
 
         $result = $this->getRemote($this->url);
 
-        if ($result->code != 200) {
+        if ($result->code != 200)
+        {
             $msg = JText::sprintf('Server Error: %s url: %s', $result->body->reason, JHtml::_('link', $this->url, $result->code, array('target' => '_blank')));
             throw new RuntimeException($msg);
         }
 
         $result->body = simplexml_load_string($result->body);
 
-        if (!($result->body instanceof SimpleXMLElement)) {
+        if (!($result->body instanceof SimpleXMLElement))
+        {
             $msg = JText::_('ERROR');
             throw new RuntimeException($msg);
         }

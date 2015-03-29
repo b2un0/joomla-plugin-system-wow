@@ -19,17 +19,21 @@ class JFormFieldRealms extends JFormFieldText
     {
         $realms = array();
 
-        if (!class_exists('WoW')) {
+        if (!class_exists('WoW'))
+        {
             return $realms;
         }
 
-        try {
+        try
+        {
             $result = WoW::getInstance()->getAdapter('WoWAPI')->getData('realms', true);
-        } catch (Exception $e) {
+        } catch (Exception $e)
+        {
             return $realms;
         }
 
-        foreach ($result->body->realms as $key => $realm) {
+        foreach ($result->body->realms as $key => $realm)
+        {
             $realms[$key] = new stdClass;
             $realms[$key]->name = $realm->slug;
             $realms[$key]->value = $realm->name;

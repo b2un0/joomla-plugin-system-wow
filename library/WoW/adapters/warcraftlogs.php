@@ -12,11 +12,51 @@ defined('_JEXEC') or die;
 class WoWAdapterWarcraftLogs extends WoWAdapterAbstract
 {
     /**
-     * @see http://forums.warcraftlogs.com/viewtopic.php?f=9&t=3279
-     * @todo implement if api endpoint avaible
+     * @see https://www.warcraftlogs.com/v1/docs#!/Reports/
+     * @throws RuntimeException
+     *
+     * @return stdClass
      */
-    public function getData()
+    public function getData($api_key)
     {
-        return null;
+        $uri = new JUri;
+
+        $uri->setPath('/v1/reports/guild/' . $this->params->get('guild') . '/' . JApplicationHelper::stringURLSafe($this->params->get('realm')) . '/' . $this->params->get('region'));
+        $uri->setVar('api_key', $api_key);
+
+        return $this->getRemote($uri);
+    }
+
+    /**
+     * @param JUri $uri
+     *
+     * @throws RuntimeException
+     *
+     * @return mixed
+     */
+    protected function getRemote($uri, $persistent = false)
+    {
+        $uri->setScheme('https');
+        $uri->setHost('www.warcraftlogs.com');
+
+        $this->url = $uri->toString();
+
+        $result = parent::getRemote($this->url, $persistent);
+
+        $result->body = json_decode($result->body);
+
+        if ($result->code != 200)
+        {
+            // hide api key from normal users
+            if (!JFactory::getUser()->get('isRoot'))
+            {
+                $uri->delVar('api_key');
+                $this->url = $uri->toString();
+            }
+            $msg = JText::sprintf('Server Error: %s url: %s', $result->body->error, JHtml::_('link', $this->url, $result->code, array('target' => '_blank'))); // TODO JText::_()
+            throw new RuntimeException($msg);
+        }
+
+        return $result;
     }
 }

@@ -12,18 +12,18 @@ defined('_JEXEC') or die;
 class plgSystemWowInstallerScript
 {
     private $modules = array(
-        'mod_wow_armory_guild_news' => 'Wow Armory Guild News',
-        'mod_wow_guild_members' => 'WoW Guild Members',
-        'mod_wow_guild_rank' => 'WoW Guild Rank',
-        'mod_wow_guild_tabard' => 'WoW Guild Tabard',
+        'mod_wow_armory_guild_news'       => 'Wow Armory Guild News',
+        'mod_wow_guild_members'           => 'WoW Guild Members',
+        'mod_wow_guild_rank'              => 'WoW Guild Rank',
+        'mod_wow_guild_tabard'            => 'WoW Guild Tabard',
         'mod_wow_latest_guild_achievements' => 'WoW latest Guild Achievements',
         'mod_wow_top_weekly_contributors' => 'WoW Top Weekly Contributors',
-        'mod_wow_raid_progress_classic' => 'WoW Raid Progress - Classic',
-        'mod_wow_raid_progress_bc' => 'WoW Raid Progress - BC',
-        'mod_wow_raid_progress_wotlk' => 'WoW Raid Progress - WotLk',
-        'mod_wow_raid_progress_cata' => 'WoW Raid Progress - Cata',
-        'mod_wow_raid_progress_mop' => 'WoW Raid Progress - MoP',
-        'mod_wow_raid_progress_wod' => 'WoW Raid Progress - WoD'
+        'mod_wow_raid_progress_classic'   => 'WoW Raid Progress - Classic',
+        'mod_wow_raid_progress_bc'        => 'WoW Raid Progress - BC',
+        'mod_wow_raid_progress_wotlk'     => 'WoW Raid Progress - WotLk',
+        'mod_wow_raid_progress_cata'      => 'WoW Raid Progress - Cata',
+        'mod_wow_raid_progress_mop'       => 'WoW Raid Progress - MoP',
+        'mod_wow_raid_progress_wod'       => 'WoW Raid Progress - WoD'
     );
 
     private $jversion = '2.5.28';
@@ -32,14 +32,16 @@ class plgSystemWowInstallerScript
 
     public function preflight()
     {
-        if (!version_compare(JVERSION, $this->jversion, '>=')) {
+        if (!version_compare(JVERSION, $this->jversion, '>='))
+        {
             $link = JHtml::_('link', 'index.php?option=com_joomlaupdate', 'Joomla! ' . $this->jversion);
             JFactory::getApplication()->enqueueMessage(sprintf('You need %s or newer to install this extension', $link), 'error');
 
             return false;
         }
 
-        if (!version_compare(PHP_VERSION, $this->phpversion, '>=')) {
+        if (!version_compare(PHP_VERSION, $this->phpversion, '>='))
+        {
             JFactory::getApplication()->enqueueMessage(sprintf('You need PHP %s or newer to install this extension', $this->phpversion), 'error');
 
             return false;
@@ -78,7 +80,8 @@ class plgSystemWowInstallerScript
                 !$plugin->params->get('locale')
             )
             && ($module = $this->loadModuleParams()) != null
-        ) {
+        )
+        {
             $plugin->params->set('guild', $module->get('guild'));
             $plugin->params->set('realm', $module->get('realm'));
             $plugin->params->set('region', $module->get('region'));
@@ -103,15 +106,18 @@ class plgSystemWowInstallerScript
 
         $modules = $db->loadColumn();
 
-        if (empty($modules)) {
+        if (empty($modules))
+        {
             return null;
         }
 
-        foreach ($modules as $module) {
+        foreach ($modules as $module)
+        {
             $module = new JRegistry($module);
 
             // check if module configured
-            if ($module->get('guild') && $module->get('realm') && $module->get('region') && $module->get('lang')) {
+            if ($module->get('guild') && $module->get('realm') && $module->get('region') && $module->get('lang'))
+            {
                 return $module;
             }
         }

@@ -33,11 +33,13 @@ abstract class WoWAdapterAbstract
     /**
      * @param $name
      * @param $arguments
+     *
      * @return mixed
      */
     public function __call($name, $arguments)
     {
-        if (method_exists($this, $name)) {
+        if (method_exists($this, $name))
+        {
             return call_user_func_array(array($this, $name), $arguments);
         }
 
@@ -55,6 +57,7 @@ abstract class WoWAdapterAbstract
     /**
      * @param string $url
      * @param bool $persistent
+     *
      * @return mixed JHttpResponse|string
      */
     protected function getRemote($url, $persistent = false)
@@ -65,12 +68,15 @@ abstract class WoWAdapterAbstract
 
         $key = md5($url);
 
-        if (!$result = $cache->get($key)) {
-            try {
+        if (!$result = $cache->get($key))
+        {
+            try
+            {
                 $http = JHttpFactory::getHttp();
                 $http->setOption('userAgent', 'Joomla/' . JVERSION . '; WoW Library/@REVISION@; php/' . phpversion());
                 $result = $http->get($url, null, $this->params->get('socket_timeout', 10));
-            } catch (Exception $e) {
+            } catch (Exception $e)
+            {
                 return $e->getMessage();
             }
 

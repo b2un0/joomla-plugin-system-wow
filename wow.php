@@ -19,9 +19,11 @@ class plgSystemWow extends JPlugin
 
         $this->loadLanguage();
 
-        if (class_exists('WoW')) {
+        if (class_exists('WoW'))
+        {
             WoW::getInstance($this->params); // define instance with params
-        } else {
+        } else
+        {
             JFactory::getApplication()->enqueueMessage(JText::_('PLG_SYSTEM_WOW_LIBRARY_MISSING'), 'error');
         }
     }
@@ -29,37 +31,44 @@ class plgSystemWow extends JPlugin
     public function onBeforeRender()
     {
         $app = JFactory::getApplication();
+        $doc = JFactory::getDocument();
+        $user = JFactory::getUser();
 
-        if ($app->isAdmin()) {
+        if ($app->isAdmin())
+        {
             if (
                 !$this->params->get('apikey') ||
                 !$this->params->get('guild') ||
                 !$this->params->get('realm') ||
                 !$this->params->get('region')
-            ) {
+            )
+            {
                 $app->enqueueMessage(JText::_('PLG_SYSTEM_WOW_CONFIGURATION_MISSING'), 'error');
+
                 return true;
             }
 
-            if ($this->params->get('j25_eol', true) && version_compare(JVERSION, 3, '<')) {
+            if ($user->id && $this->params->get('j25_eol', true) && version_compare(JVERSION, 3, '<'))
+            {
                 $app->enqueueMessage(JText::_('PLG_SYSTEM_WOW_J25_EOL_SUPPORT_DROPPED'), 'error');
             }
 
-            // TODO muss strikter behandelt werden, wird auch bei Ajax request angewendet
-            if ($this->params->get('status', true)) {
-                $doc = JFactory::getDocument();
+            if ($doc instanceof JDocumentHTML && $this->params->get('status', true))
+            {
                 $buffer = $doc->getBuffer('modules', 'status');
 
                 $link = '<a href="' . JRoute::_('index.php?option=com_plugins&view=plugins&filter_folder=system&filter_search=wow') . '">';
                 $link .= $this->params->get('guild') . ' @ ' . strtoupper($this->params->get('region')) . '-' . $this->params->get('realm');
                 $link .= '</a>';
 
-                if (version_compare(JVERSION, 3, '>=')) {
+                if (version_compare(JVERSION, 3, '>='))
+                {
                     $buffer .= '<div class="btn-group">';
                     $buffer .= '<span class="badge">WoW</span> ';
                     $buffer .= $link;
                     $buffer .= '</div>';
-                } else {
+                } else
+                {
                     $buffer .= '<span style="background: url(../media/wow/wow.png) 3px 3px no-repeat;">';
                     $buffer .= $link;
                     $buffer .= '</span>';
@@ -73,11 +82,13 @@ class plgSystemWow extends JPlugin
     public function onBeforeCompileHead()
     {
         $app = JFactory::getApplication();
-        if ($app->isAdmin()) {
+        if ($app->isAdmin())
+        {
             return;
         }
 
-        if (version_compare(JVERSION, 3, '>=')) {
+        if (version_compare(JVERSION, 3, '>='))
+        {
             JHtml::_('jquery.framework');
         }
 

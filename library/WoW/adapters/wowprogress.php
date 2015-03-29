@@ -22,7 +22,8 @@ class WoWAdapterWoWProgress extends WoWAdapterAbstract
 
         $result->body = json_decode($result->body);
 
-        if (empty($result->body) || $result->code != 200) {
+        if (empty($result->body) || $result->code != 200)
+        {
             $msg = JText::sprintf('invalid response: %s', JHtml::_('link', $this->url, $result->code, array('target' => '_blank')));
             throw new RuntimeException($msg);
         }

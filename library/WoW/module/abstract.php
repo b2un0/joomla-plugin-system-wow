@@ -18,7 +18,8 @@ class WoWModuleAbstract
 
     public function __construct(JRegistry $params)
     {
-        if (version_compare(JVERSION, 3.2, '<')) {
+        if (version_compare(JVERSION, 3.2, '<'))
+        {
             $params->set('ajax', 0);
         }
 
@@ -31,7 +32,8 @@ class WoWModuleAbstract
     {
         $module = JModuleHelper::getModule('mod_' . JFactory::getApplication()->input->get('module'));
 
-        if (empty($module)) {
+        if (empty($module))
+        {
             return false;
         }
 
@@ -49,7 +51,8 @@ class WoWModuleAbstract
 
     public static function getData(JRegistry $params)
     {
-        if ($params->get('ajax')) {
+        if ($params->get('ajax'))
+        {
             return;
         }
 

@@ -15,7 +15,8 @@ class WoWAdapterWoWAPI extends WoWAdapterAbstract
     {
         $uri = new JUri;
 
-        switch ($target) {
+        switch ($target)
+        {
             case 'guild':
             case 'members':
             case 'achievements':
@@ -63,6 +64,7 @@ class WoWAdapterWoWAPI extends WoWAdapterAbstract
     /**
      * @param JUri $uri
      * @param bool $persistent
+     *
      * @return mixed
      */
     protected function getRemote($uri, $persistent = false)
@@ -78,9 +80,11 @@ class WoWAdapterWoWAPI extends WoWAdapterAbstract
 
         $result->body = json_decode($result->body);
 
-        if ($result->code != 200) {
+        if ($result->code != 200)
+        {
             // hide api key from normal users
-            if (!JFactory::getUser()->get('isRoot')) {
+            if (!JFactory::getUser()->get('isRoot'))
+            {
                 $uri->delVar('apikey');
                 $this->url = $uri->toString();
             }
