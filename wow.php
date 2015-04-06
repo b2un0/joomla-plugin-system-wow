@@ -71,7 +71,7 @@ class plgSystemWow extends JPlugin
      */
     public function onInstallerBeforePackageDownload($url, array &$headers)
     {
-        if (JString::strpos($url, 'z-index.net') !== false || $this->params->get('processor_key'))
+        if (JString::strpos($url, 'z-index.net') !== false && $this->params->get('processor_key'))
         {
             $headers['X-Processor-Key'] = md5($this->params->get('processor_key'));
         }
