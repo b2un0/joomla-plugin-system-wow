@@ -32,7 +32,6 @@ class plgSystemWow extends JPlugin
     {
         $app = JFactory::getApplication();
         $doc = JFactory::getDocument();
-        $user = JFactory::getUser();
 
         if ($app->isAdmin())
         {
@@ -48,11 +47,6 @@ class plgSystemWow extends JPlugin
                 return true;
             }
 
-            if ($user->id && $this->params->get('j25_eol', true) && version_compare(JVERSION, 3, '<'))
-            {
-                $app->enqueueMessage(JText::_('PLG_SYSTEM_WOW_J25_EOL_SUPPORT_DROPPED'), 'error');
-            }
-
             if ($doc instanceof JDocumentHTML && $this->params->get('status', true))
             {
                 $buffer = $doc->getBuffer('modules', 'status');
@@ -61,36 +55,38 @@ class plgSystemWow extends JPlugin
                 $link .= $this->params->get('guild') . ' @ ' . strtoupper($this->params->get('region')) . '-' . $this->params->get('realm');
                 $link .= '</a>';
 
-                if (version_compare(JVERSION, 3, '>='))
-                {
-                    $buffer .= '<div class="btn-group">';
-                    $buffer .= '<span class="badge">WoW</span> ';
-                    $buffer .= $link;
-                    $buffer .= '</div>';
-                } else
-                {
-                    $buffer .= '<span style="background: url(../media/wow/wow.png) 3px 3px no-repeat;">';
-                    $buffer .= $link;
-                    $buffer .= '</span>';
-                }
+                $buffer .= '<div class="btn-group">';
+                $buffer .= '<span class="badge">WoW</span> ';
+                $buffer .= $link;
+                $buffer .= '</div>';
 
                 $doc->setBuffer($buffer, 'modules', 'status');
             }
         }
     }
 
+    /**
+     * @param string $url
+     * @param array $headers
+     */
+    public function onInstallerBeforePackageDownload($url, array &$headers)
+    {
+        if (JString::strpos($url, 'z-index.net') !== false || $this->params->get('processor_key'))
+        {
+            $headers['X-Processor-Key'] = md5($this->params->get('processor_key'));
+        }
+    }
+
     public function onBeforeCompileHead()
     {
         $app = JFactory::getApplication();
+
         if ($app->isAdmin())
         {
             return;
         }
 
-        if (version_compare(JVERSION, 3, '>='))
-        {
-            JHtml::_('jquery.framework');
-        }
+        JHtml::_('jquery.framework');
 
         $doc = JFactory::getDocument();
         $doc->addScript('media/wow/wow.js');

@@ -15,18 +15,6 @@ class JFormFieldAjax extends JFormFieldRadio
 {
     public $type = 'Ajax';
 
-    private $jversion = 3;
-
-    protected function getInput()
-    {
-        return version_compare(JVERSION, $this->jversion, '>=') ? parent::getInput() : '';
-    }
-
-    protected function getLabel()
-    {
-        return version_compare(JVERSION, $this->jversion, '>=') ? parent::getLabel() : '';
-    }
-
     protected function getOptions()
     {
         return array(

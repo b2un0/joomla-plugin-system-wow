@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
 class WoWModuleAbstract
 {
     /**
@@ -16,13 +18,8 @@ class WoWModuleAbstract
      */
     protected $params = null;
 
-    public function __construct(JRegistry $params)
+    public function __construct(Registry $params)
     {
-        if (version_compare(JVERSION, 3.2, '<'))
-        {
-            $params->set('ajax', 0);
-        }
-
         $this->params = new stdClass;
         $this->params->module = $params;
         $this->params->global = WoW::getInstance()->params;
@@ -39,7 +36,7 @@ class WoWModuleAbstract
 
         JFactory::getLanguage()->load($module->module);
 
-        $params = new JRegistry($module->params);
+        $params = new Registry($module->params);
         $params->set('ajax', 0);
 
         ob_start();
@@ -49,7 +46,7 @@ class WoWModuleAbstract
         return ob_get_clean();
     }
 
-    public static function getData(JRegistry $params)
+    public static function getData(Registry $params)
     {
         if ($params->get('ajax'))
         {

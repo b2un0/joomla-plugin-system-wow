@@ -9,10 +9,12 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
 abstract class WoWAdapterAbstract
 {
     /**
-     * @var Joomla\Registry\Registry
+     * @var Registry
      */
     protected $params;
 
@@ -22,9 +24,9 @@ abstract class WoWAdapterAbstract
     protected $url;
 
     /**
-     * @param JRegistry $params
+     * @param Registry $params
      */
-    public function __construct(JRegistry $params)
+    public function __construct(Registry $params)
     {
         $this->params = $params;
     }

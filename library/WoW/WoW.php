@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
 class WoW
 {
     /**
@@ -17,11 +19,11 @@ class WoW
     protected static $instance = null;
 
     /**
-     * @var JRegistry
+     * @var Registry
      */
     public $params = null;
 
-    public static function getInstance(JRegistry $params = null)
+    public static function getInstance(Registry $params = null)
     {
         // $instance set, but $params given -> return new instance
         if (self::$instance && $params != null)
@@ -46,9 +48,9 @@ class WoW
     }
 
     /**
-     * @param Joomla\Registry\Registry $params
+     * @param Registry $params
      */
-    private function __construct(JRegistry $params)
+    private function __construct(Registry $params)
     {
         JLoader::discover('WoWAdapter', __DIR__ . '/adapters/');
         JLoader::register('WoWModuleAbstract', __DIR__ . '/module/abstract.php');

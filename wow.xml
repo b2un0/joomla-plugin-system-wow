@@ -61,11 +61,8 @@
             <fieldset name="advanced">
                 <field name="cache_timeout" type="text" filter="integer" default="30" required="true" label="PLG_SYSTEM_WOW_CACHE_TIMEOUT_LABEL" description="PLG_SYSTEM_WOW_CACHE_TIMEOUT_DESC" />
                 <field name="socket_timeout" type="text" filter="integer" default="10" required="true" label="PLG_SYSTEM_WOW_SOCKET_TIMEOUT_LABEL" description="PLG_SYSTEM_WOW_SOCKET_TIMEOUT_DESC" />
+                <field name="processor_key" type="text" filter="alnum" default="" maxlength="255" label="PLG_SYSTEM_WOW_PROCESSOR_KEY_LABEL" description="PLG_SYSTEM_WOW_PROCESSOR_KEY_DESC" />
                 <field name="status" type="radio" class="btn-group" default="1" label="PLG_SYSTEM_WOW_STATUS_LABEL" description="PLG_SYSTEM_WOW_STATUS_DESC">
-                    <option value="1">JYES</option>
-                    <option value="0">JNO</option>
-                </field>
-                <field name="j25_eol" type="radio" class="btn-group" default="1" label="PLG_SYSTEM_WOW_J25_EOL_LABEL" description="PLG_SYSTEM_WOW_J25_EOL_DESC">
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>
