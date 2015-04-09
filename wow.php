@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\String\String;
+
 class plgSystemWow extends JPlugin
 {
     protected $autoloadLanguage = true;
@@ -16,8 +18,6 @@ class plgSystemWow extends JPlugin
     public function onAfterInitialise()
     {
         JLoader::register('WoW', JPATH_LIBRARIES . '/WoW/WoW.php');
-
-        $this->loadLanguage();
 
         if (class_exists('WoW'))
         {
@@ -33,7 +33,7 @@ class plgSystemWow extends JPlugin
         $app = JFactory::getApplication();
         $doc = JFactory::getDocument();
 
-        if ($app->isAdmin())
+        if ($app->isAdmin() && JFactory::getUser()->id)
         {
             if (
                 !$this->params->get('apikey') ||
@@ -71,9 +71,13 @@ class plgSystemWow extends JPlugin
      */
     public function onInstallerBeforePackageDownload($url, array &$headers)
     {
-        if (JString::strpos($url, 'z-index.net') !== false && $this->params->get('processor_key'))
+        if (String::strpos($url, 'z-index.net') !== false)
         {
-            $headers['X-Processor-Key'] = md5($this->params->get('processor_key'));
+            if ($this->params->get('processor_key'))
+            {
+                $headers['X-Processor-Key'] = md5($this->params->get('processor_key'));
+            }
+            $headers['X-Request-Host'] = JUri::getInstance()->getHost();
         }
     }
 
