@@ -28,6 +28,21 @@ class plgSystemWow extends JPlugin
         }
     }
 
+    public function onAfterRoute()
+    {
+        $app = JFactory::getApplication();
+
+        if (
+            $app->isAdmin() &&
+            $app->input->getCmd('option') == 'com_installer' &&
+            $app->input->getCmd('view') == 'update' &&
+            !$this->params->get('processor_key')
+        )
+        {
+            $app->enqueueMessage(JText::_('PLG_SYSTEM_WOW_INTEGRATED_UPDATES_NOT_POSSIBLE'), 'error');
+        }
+    }
+
     public function onBeforeRender()
     {
         $app = JFactory::getApplication();
@@ -51,13 +66,11 @@ class plgSystemWow extends JPlugin
             {
                 $buffer = $doc->getBuffer('modules', 'status');
 
-                $link = '<a href="' . JRoute::_('index.php?option=com_plugins&view=plugins&filter_folder=system&filter_search=wow') . '">';
-                $link .= $this->params->get('guild') . ' @ ' . strtoupper($this->params->get('region')) . '-' . $this->params->get('realm');
-                $link .= '</a>';
-
                 $buffer .= '<div class="btn-group">';
                 $buffer .= '<span class="badge">WoW</span> ';
-                $buffer .= $link;
+                $buffer .= '<a href="' . JRoute::_('index.php?option=com_plugins&view=plugins&filter_folder=system&filter_search=wow') . '">';
+                $buffer .= $this->params->get('guild') . ' @ ' . strtoupper($this->params->get('region')) . '-' . $this->params->get('realm');
+                $buffer .= '</a>';
                 $buffer .= '</div>';
 
                 $doc->setBuffer($buffer, 'modules', 'status');
