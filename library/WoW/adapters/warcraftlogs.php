@@ -21,6 +21,9 @@ class WoWAdapterWarcraftLogs extends WoWAdapterAbstract
     {
         $uri = new JUri;
 
+        $this->params->set('realm', str_replace("'", '', $this->params->get('realm')));
+        $this->params->set('guild', str_replace(' ', '+', $this->params->get('guild')));
+
         $uri->setPath('/v1/reports/guild/' . $this->params->get('guild') . '/' . JApplicationHelper::stringURLSafe($this->params->get('realm')) . '/' . $this->params->get('region'));
         $uri->setVar('api_key', $api_key);
 
