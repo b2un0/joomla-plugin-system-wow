@@ -97,6 +97,7 @@ class plgSystemWow extends JPlugin
     public function onBeforeCompileHead()
     {
         $app = JFactory::getApplication();
+        $Itemid = $app->input->getInt('Itemid') ? $app->input->getInt('Itemid') : 0;
 
         if ($app->isAdmin())
         {
@@ -110,7 +111,7 @@ class plgSystemWow extends JPlugin
         $doc->addStyleSheet('media/wow/wow.css');
 
         $js = 'window.wow.base="' . JUri::base(true) . '";';
-        $js .= 'window.wow.Itemid=' . $app->input->getInt('Itemid') . ';';
+        $js .= 'window.wow.Itemid=' . $Itemid . ';';
 
         $doc->addScriptDeclaration($js);
     }
