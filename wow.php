@@ -3,7 +3,7 @@
 /**
  * @author     Branko Wilhelm <branko.wilhelm@gmail.com>
  * @link       http://www.z-index.net
- * @copyright  (c) 2013 - 2015 Branko Wilhelm
+ * @copyright  (c) 2013 - 2016 Branko Wilhelm
  * @license    GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
@@ -25,21 +25,6 @@ class plgSystemWow extends JPlugin
         } else
         {
             JFactory::getApplication()->enqueueMessage(JText::_('PLG_SYSTEM_WOW_LIBRARY_MISSING'), 'error');
-        }
-    }
-
-    public function onAfterRoute()
-    {
-        $app = JFactory::getApplication();
-
-        if (
-            $app->isAdmin() &&
-            $app->input->getCmd('option') == 'com_installer' &&
-            $app->input->getCmd('view') == 'update' &&
-            !$this->params->get('processor_key')
-        )
-        {
-            $app->enqueueMessage(JText::_('PLG_SYSTEM_WOW_INTEGRATED_UPDATES_NOT_POSSIBLE'), 'error');
         }
     }
 
@@ -75,22 +60,6 @@ class plgSystemWow extends JPlugin
 
                 $doc->setBuffer($buffer, 'modules', 'status');
             }
-        }
-    }
-
-    /**
-     * @param string $url
-     * @param array $headers
-     */
-    public function onInstallerBeforePackageDownload($url, array &$headers)
-    {
-        if (String::strpos($url, 'z-index.net') !== false)
-        {
-            if ($this->params->get('processor_key'))
-            {
-                $headers['X-Processor-Key'] = md5($this->params->get('processor_key'));
-            }
-            $headers['X-Request-Host'] = JUri::getInstance()->getHost();
         }
     }
 

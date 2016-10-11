@@ -3,7 +3,7 @@
     <name>PLG_SYSTEM_WOW</name>
     <author>Branko Wilhelm</author>
     <creationDate>Dez 2013</creationDate>
-    <copyright>Copyright (C) 2013 - 2015 Branko Wilhelm. All rights reserved.</copyright>
+    <copyright>Copyright (C) 2013 - 2016 Branko Wilhelm. All rights reserved.</copyright>
     <license>GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html</license>
     <authorEmail>branko.wilhelm@gmail.com</authorEmail>
     <authorUrl>www.z-index.net</authorUrl>
@@ -61,7 +61,6 @@
             <fieldset name="advanced">
                 <field name="cache_timeout" type="text" filter="integer" default="30" required="true" label="PLG_SYSTEM_WOW_CACHE_TIMEOUT_LABEL" description="PLG_SYSTEM_WOW_CACHE_TIMEOUT_DESC" />
                 <field name="socket_timeout" type="text" filter="integer" default="10" required="true" label="PLG_SYSTEM_WOW_SOCKET_TIMEOUT_LABEL" description="PLG_SYSTEM_WOW_SOCKET_TIMEOUT_DESC" />
-                <field name="processor_key" type="text" filter="alnum" default="" maxlength="255" label="PLG_SYSTEM_WOW_PROCESSOR_KEY_LABEL" description="PLG_SYSTEM_WOW_PROCESSOR_KEY_DESC" />
                 <field name="status" type="radio" class="btn-group" default="1" label="PLG_SYSTEM_WOW_STATUS_LABEL" description="PLG_SYSTEM_WOW_STATUS_DESC">
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
