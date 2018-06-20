@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\String\String;
-
 class plgSystemWow extends JPlugin
 {
     protected $autoloadLanguage = true;
