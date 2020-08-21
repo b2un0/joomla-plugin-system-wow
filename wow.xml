@@ -21,7 +21,7 @@
         <language tag="de-DE">de-DE/de-DE.plg_system_wow.sys.ini</language>
     </languages>
     <updateservers>
-        <server type="collection" priority="1" name="z-index development">http://www.z-index.net/en/extensions.xml</server>
+        <server type="extension" priority="1" name="System - WoW Configuration">https://raw.githubusercontent.com/z-index-net/joomla-plugin-system-wow/master/updatestream.xml</server>
     </updateservers>
     <media folder="media" destination="wow">
         <filename>loader.gif</filename>
