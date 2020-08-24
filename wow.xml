@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" group="system" method="upgrade">
+<extension version="3.0" type="plugin" group="system" method="upgrade">
     <name>PLG_SYSTEM_WOW</name>
     <author>Branko Wilhelm</author>
     <creationDate>Dez 2013</creationDate>
@@ -32,7 +32,8 @@
     <config>
         <fields name="params" addfieldpath="/plugins/system/wow/fields/">
             <fieldset name="basic">
-                <field name="apikey" type="info" default="" size="30" required="true" label="PLG_SYSTEM_WOW_APIKEY_LABEL" description="PLG_SYSTEM_WOW_APIKEY_DESC" info_url="https://dev.battle.net/" info_label="PLG_SYSTEM_WOW_APIKEY_INFO_LABEL" info_title="PLG_SYSTEM_WOW_APIKEY_INFO_TITLE" />
+                <field name="client_id" type="info" default="" size="30" required="true" label="PLG_SYSTEM_WOW_CLIENT_ID_LABEL" description="PLG_SYSTEM_WOW_CLIENT_ID_DESC"/>
+                <field name="secret" type="info" default="" size="30" required="true" label="PLG_SYSTEM_WOW_SECRET_LABEL" description="PLG_SYSTEM_WOW_SECRET_DESC" />
                 <field name="guild" type="text" default="" size="30" required="true" label="PLG_SYSTEM_WOW_GUILD_LABEL" description="PLG_SYSTEM_WOW_GUILD_DESC" />
                 <field name="realm" type="realms" default="" size="30" required="true" label="PLG_SYSTEM_WOW_REALM_LABEL" description="PLG_SYSTEM_WOW_REALM_DESC" />
                 <field name="region" type="list" default="" required="true" label="PLG_SYSTEM_WOW_REGION_LABEL" description="PLG_SYSTEM_WOW_REGION_DESC">

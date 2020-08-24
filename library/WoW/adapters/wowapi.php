@@ -15,8 +15,7 @@ class WoWAdapterWoWAPI extends WoWAdapterAbstract
     {
         $uri = new JUri;
 
-        switch ($target)
-        {
+        switch ($target) {
             case 'guild':
             case 'members':
             case 'achievements':
@@ -52,13 +51,17 @@ class WoWAdapterWoWAPI extends WoWAdapterAbstract
         return $this->getRemote($uri, $persistent);
     }
 
-    protected function getMember($member, $realm, array $fields = array('items', 'achievements'))
+    protected function getMember($member, $realm, array $fields = ['items', 'achievements'])
     {
         $uri = new JUri;
         $uri->setPath('/wow/character/' . $realm . '/' . $member);
         $uri->setVar('fields', implode(',', $fields));
 
         return $this->getRemote($uri);
+    }
+
+    private function getToken()
+    {
     }
 
     /**
@@ -72,7 +75,6 @@ class WoWAdapterWoWAPI extends WoWAdapterAbstract
         $uri->setScheme($this->params->get('scheme', 'https'));
         $uri->setHost($this->params->get('region') . '.api.battle.net');
         $uri->setVar('locale', $this->params->get('locale'));
-        $uri->setVar('apikey', $this->params->get('apikey'));
 
         $this->url = $uri->toString();
 
@@ -80,15 +82,13 @@ class WoWAdapterWoWAPI extends WoWAdapterAbstract
 
         $result->body = json_decode($result->body);
 
-        if ($result->code != 200)
-        {
+        if ($result->code != 200) {
             // hide api key from normal users
-            if (!JFactory::getUser()->get('isRoot'))
-            {
+            if (!JFactory::getUser()->get('isRoot')) {
                 $uri->delVar('apikey');
                 $this->url = $uri->toString();
             }
-            $msg = JText::sprintf('Server Error: %s url: %s', $result->body->reason, JHtml::_('link', $this->url, $result->code, array('target' => '_blank'))); // TODO JText::_()
+            $msg = JText::sprintf('Server Error: %s url: %s', $result->body->reason, JHtml::_('link', $this->url, $result->code, ['target' => '_blank'])); // TODO JText::_()
             throw new RuntimeException($msg);
         }
 

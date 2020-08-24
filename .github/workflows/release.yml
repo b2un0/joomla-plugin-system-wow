@@ -19,7 +19,6 @@ jobs:
                 with:
                     find: "@REVISION@"
                     replace: "${{ env.GITHUB_REF_SLUG }}"
-                    include: "./*.xml"
 
             -   name: Archive Release
                 uses: thedoctor0/zip-release@master
