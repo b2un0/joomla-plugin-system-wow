@@ -8,7 +8,7 @@
 
 Global configuration plugin for all my wow extensions.
 
-[dev.battle.net](http://dev.battle.net)!
+You musst create a (new) Client on [develop.battle.net](http://develop.battle.net) to get the required `client_id` and `client_secret`!
 
 ### Preview
 

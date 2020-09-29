@@ -17,64 +17,109 @@ class WoWAdapterWoWAPI extends WoWAdapterAbstract
 
         switch ($target) {
             case 'guild':
+                $uri->setVar('namespace', 'profile-' . $this->params->get('region'));
+                $uri->setPath('/data/wow/guild/' . ($this->params->get('realm')) . '/' . ($this->params->get('guild')));
+                break;
+
             case 'members':
+                $uri->setVar('namespace', 'profile-' . $this->params->get('region'));
+                $uri->setPath('/data/wow/guild/' . ($this->params->get('realm')) . '/' . ($this->params->get('guild')) . '/roster');
+                break;
+
             case 'achievements':
-                $uri->setPath('/wow/guild/' . rawurlencode($this->params->get('realm')) . '/' . rawurlencode($this->params->get('guild')));
-                $uri->setVar('fields', 'members,achievements');
+                $uri->setVar('namespace', 'dynamic-' . $this->params->get('region'));
+                $uri->setPath('/data/wow/guild/' . ($this->params->get('realm')) . '/' . ($this->params->get('guild')) . '/achievements');
                 break;
 
             case 'races':
-                $uri->setPath('/wow/data/character/races');
+                $uri->setPath('/data/wow/playable-race/index');
                 break;
 
             case 'classes':
-                $uri->setPath('/wow/data/character/classes');
+                $uri->setPath('/data/wow/playable-class/index');
                 break;
 
             case 'realms':
-                $uri->setPath('/wow/realm/status');
+                $uri->setPath('/data/wow/realm/index');
                 break;
 
             default:
                 return null;
-                break;
         }
 
-        return $this->getRemote($uri, $persistent);
+        $result = $this->getRemote($uri, $persistent);
+
+        domix($result, 1);
     }
 
     protected function getAchievement($achievement, $persistent = true)
     {
         $uri = new JUri;
-        $uri->setPath('/wow/achievement/' . (int)$achievement);
+        $uri->setVar('namespace', 'static-' . $this->params->get('region'));
+        $uri->setPath('/data/wow/achievement/' . $achievement);
 
         return $this->getRemote($uri, $persistent);
     }
 
-    protected function getMember($member, $realm, array $fields = ['items', 'achievements'])
+    protected function getMember($member, $realm)
     {
         $uri = new JUri;
-        $uri->setPath('/wow/character/' . $realm . '/' . $member);
-        $uri->setVar('fields', implode(',', $fields));
+        $uri->setVar('namespace', 'profile-' . $this->params->get('region'));
+        $uri->setPath('/data/wow/character/' . $realm . '/' . $member . '/achievements');
 
         return $this->getRemote($uri);
     }
 
     private function getToken()
     {
+        $uri = new Joomla\Uri\Uri();
+
+        $uri->setScheme($this->params->get('scheme', 'https'));
+        $uri->setHost($this->params->get('region') . '.battle.net');
+        $uri->setPath('/oauth/token');
+        $uri->setUser($this->params->get('client_id'));
+        $uri->setPass($this->params->get('client_secret'));
+
+        $cache = JFactory::getCache('wow', 'output');
+        $cache->setCaching(1);
+        $cache->setLifeTime(82800); // access token is 24hour valid
+
+        $key = md5($uri->toString());
+
+        if (!$token = $cache->get($key)) {
+            $http = JHttpFactory::getHttp();
+            $http->setOption('userAgent', 'Joomla/' . JVERSION . '; WoW Library/z-index.net; php/' . PHP_VERSION);
+            $result = $http->post($uri, 'grant_type=client_credentials', [], $this->params->get('socket_timeout', 10));
+            $result->body = json_decode($result->body);
+
+            $cache->store($result->body->access_token, $key);
+
+            $token = $result->body->access_token;
+        }
+
+        return $token;
     }
 
     /**
      * @param JUri $uri
      * @param bool $persistent
+     * @param array $headers
      *
-     * @return mixed
+     * @return stdClass json decoded payload
      */
-    protected function getRemote($uri, $persistent = false)
+    protected function getRemote($uri, $persistent = false, $headers = [])
     {
         $uri->setScheme($this->params->get('scheme', 'https'));
-        $uri->setHost($this->params->get('region') . '.api.battle.net');
-        $uri->setVar('locale', $this->params->get('locale'));
+
+        if ($this->params->get('region') === 'cn') {
+            $uri->setHost('gateway.battlenet.com.cn');
+        } else {
+            $uri->setHost($this->params->get('region') . '.api.blizzard.com');
+        }
+
+        $uri->setVar('locale', $this->params->get('locale', 'en_US'));
+
+        $uri->setVar('access_token', $this->getToken());
 
         $this->url = $uri->toString();
 
@@ -85,10 +130,11 @@ class WoWAdapterWoWAPI extends WoWAdapterAbstract
         if ($result->code != 200) {
             // hide api key from normal users
             if (!JFactory::getUser()->get('isRoot')) {
-                $uri->delVar('apikey');
+                $uri->delVar('access_token');
                 $this->url = $uri->toString();
             }
-            $msg = JText::sprintf('Server Error: %s url: %s', $result->body->reason, JHtml::_('link', $this->url, $result->code, ['target' => '_blank'])); // TODO JText::_()
+
+            $msg = JText::sprintf('Server Error: %s url: %s', $result->body->reason, JHtml::_('link', $this->url, $result->code, ['target' => '_blank']));
             throw new RuntimeException($msg);
         }
 

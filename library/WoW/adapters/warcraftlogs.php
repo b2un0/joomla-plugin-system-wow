@@ -37,7 +37,7 @@ class WoWAdapterWarcraftLogs extends WoWAdapterAbstract
      *
      * @return mixed
      */
-    protected function getRemote($uri, $persistent = false)
+    protected function getRemote($uri, $persistent = false, $headers = [])
     {
         $uri->setScheme('https');
         $uri->setHost('www.warcraftlogs.com');

@@ -86,7 +86,8 @@ class WoW
     public function checkConfig()
     {
         if (
-            !$this->params->get('apikey') ||
+            !$this->params->get('client_id') ||
+            !$this->params->get('client_secret') ||
             !$this->params->get('guild') ||
             !$this->params->get('realm') ||
             !$this->params->get('region') ||
